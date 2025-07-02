@@ -6,10 +6,16 @@
   <title>فيديو محمي</title>
   <link href="https://cdn.plyr.io/3.6.3/demo.css" rel="stylesheet" />
   <style>
-    body {
+    :root {
+      --plyr-color-main: #ff0000; /* ثيم أحمر لعناصر التحكم */
+    }
+
+    html, body {
       margin: 0;
       padding: 0;
-      background: black;
+      background: #000000;
+      height: 100%;
+      width: 100%;
       overflow: hidden;
     }
 
@@ -24,25 +30,28 @@
       font-size: 20px;
       font-weight: bold;
       padding: 6px 14px;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(255, 0, 0, 0.25);
       color: white;
       border-radius: 10px;
       pointer-events: none;
       white-space: nowrap;
       z-index: 9999;
-      opacity: 0.9;
+      opacity: 0.7;
       transition: top 3s ease, left 3s ease;
     }
 
     iframe {
       width: 100%;
       height: 100%;
+      border: none;
       pointer-events: none;
+      position: absolute;
+      top: 0;
+      left: 0;
     }
   </style>
 </head>
 <body>
-
   <div class="plyr__video-embed" id="player">
     <div class="floating-code" id="floatingCode">جارٍ التحميل...</div>
   </div>
@@ -60,14 +69,14 @@
     const codeElement = document.getElementById('floatingCode');
     const playerElement = document.getElementById('player');
 
-    // إنشاء iframe بناءً على video ID
+    // إنشاء iframe للفيديو
     const iframe = document.createElement('iframe');
     iframe.setAttribute('src', `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1&rel=0&modestbranding=1&showinfo=0&controls=1`);
     iframe.setAttribute('allowfullscreen', '');
     iframe.setAttribute('allow', 'autoplay');
     playerElement.insertBefore(iframe, codeElement);
 
-    // عرض الرقم فقط بدون كلمة "كود"
+    // عرض الكود فقط بدون كلمة "كود"
     codeElement.innerText = `${code}`;
 
     // تحريك الكود داخل الفيديو
@@ -87,7 +96,7 @@
     window.addEventListener('load', moveCode);
     setInterval(moveCode, 4000);
 
-    // تفعيل fullscreen بعد أول كليك
+    // تفعيل وضع ملء الشاشة بعد أول ضغطة
     const goFullscreen = () => {
       if (playerElement.requestFullscreen) {
         playerElement.requestFullscreen();
@@ -106,7 +115,7 @@
     };
     document.addEventListener('click', start);
 
-    // منع كليك يمين + فحص العنصر
+    // تعطيل كليك يمين و أدوات المطور
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.addEventListener('keydown', function(e) {
       if (
@@ -118,6 +127,5 @@
       }
     });
   </script>
-
 </body>
 </html>
