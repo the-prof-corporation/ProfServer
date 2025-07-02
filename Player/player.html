@@ -69,9 +69,9 @@
     const codeElement = document.getElementById('floatingCode');
     const playerElement = document.getElementById('player');
 
-    // إنشاء iframe للفيديو
+    // إنشاء iframe للفيديو مع تعطيل الإعلانات
     const iframe = document.createElement('iframe');
-    iframe.setAttribute('src', `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1&rel=0&modestbranding=1&showinfo=0&controls=1`);
+    iframe.setAttribute('src', `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1&rel=0&modestbranding=1&showinfo=0&controls=1&iv_load_policy=3&disablekb=1&fs=0&enablejsapi=1`);
     iframe.setAttribute('allowfullscreen', '');
     iframe.setAttribute('allow', 'autoplay');
     playerElement.insertBefore(iframe, codeElement);
