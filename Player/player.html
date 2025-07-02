@@ -69,12 +69,25 @@
     const codeElement = document.getElementById('floatingCode');
     const playerElement = document.getElementById('player');
 
-    // إنشاء iframe للفيديو مع تعطيل الإعلانات
+    // إنشاء iframe للفيديو بدون تحكم في الصوت
     const iframe = document.createElement('iframe');
     iframe.setAttribute('src', `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1&rel=0&modestbranding=1&showinfo=0&controls=1&iv_load_policy=3&disablekb=1&fs=0&enablejsapi=1`);
     iframe.setAttribute('allowfullscreen', '');
     iframe.setAttribute('allow', 'autoplay');
+    iframe.setAttribute('id', 'ytplayer');
     playerElement.insertBefore(iframe, codeElement);
+
+    // إخفاء التحكم في مستوى الصوت باستخدام CSS بعد تحميل اللاعب
+    const hideVolumeControl = () => {
+      const style = document.createElement('style');
+      style.textContent = `
+        .plyr__controls button[data-plyr='mute'],
+        .plyr__volume {
+          display: none !important;
+        }
+      `;
+      document.head.appendChild(style);
+    };
 
     // عرض الكود فقط بدون كلمة "كود"
     codeElement.innerText = `${code}`;
@@ -93,7 +106,10 @@
       codeElement.style.top = `${randomTop}px`;
     }
 
-    window.addEventListener('load', moveCode);
+    window.addEventListener('load', () => {
+      moveCode();
+      setTimeout(hideVolumeControl, 1000); // إخفاء عناصر التحكم بالصوت بعد ثانية
+    });
     setInterval(moveCode, 4000);
 
     // تفعيل وضع ملء الشاشة بعد أول ضغطة
