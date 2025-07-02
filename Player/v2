@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>فيديو محمي</title>
+  <link href="https://cdn.plyr.io/3.6.3/demo.css" rel="stylesheet" />
+  <style>
+    :root {
+      --plyr-color-main: #ff0000;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    #player {
+      width: 100%;
+      height: 100vh;
+      position: relative;
+    }
+
+    .floating-code {
+      position: absolute;
+      font-size: 20px;
+      font-weight: bold;
+      padding: 6px 14px;
+      background: rgba(255, 0, 0, 0.25);
+      color: white;
+      border-radius: 10px;
+      pointer-events: none;
+      white-space: nowrap;
+      z-index: 9999;
+      opacity: 0.7;
+      transition: top 3s ease, left 3s ease;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      pointer-events: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="plyr__video-embed" id="player">
+    <div class="floating-code" id="floatingCode">جارٍ التحميل...</div>
+  </div>
+
+  <script src="https://cdn.plyr.io/3.7.8/demo.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
+    const videoId = params.get('video');
+
+    if (!code || !videoId) {
+      window.location.href = "unauthorized.html";
+    }
+
+    const codeElement = document.getElementById('floatingCode');
+    const playerElement = document.getElementById('player');
+
+    // إنشاء iframe للفيديو
+    const iframe = document.createElement('iframe');
+    iframe.setAttribute('src', `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1&loop=1&playlist=${videoId}&rel=0&modestbranding=1&showinfo=0&controls=1&iv_load_policy=3&disablekb=1&fs=0&enablejsapi=1`);
+    iframe.setAttribute('allowfullscreen', '');
+    iframe.setAttribute('allow', 'autoplay');
+    iframe.setAttribute('id', 'ytplayer');
+    playerElement.insertBefore(iframe, codeElement);
+
+    // إخفاء التحكم في مستوى الصوت
+    const hideVolumeControl = () => {
+      const style = document.createElement('style');
+      style.textContent = `
+        .plyr__controls button[data-plyr='mute'],
+        .plyr__volume {
+          display: none !important;
+        }
+      `;
+      document.head.appendChild(style);
+    };
+
+    codeElement.innerText = `${code}`;
+
+    function moveCode() {
+      const playerRect = playerElement.getBoundingClientRect();
+      const codeRect = codeElement.getBoundingClientRect();
+      const maxLeft = playerRect.width - codeRect.width;
+      const maxTop = playerRect.height - codeRect.height;
+      const randomLeft = Math.floor(Math.random() * maxLeft);
+      const randomTop = Math.floor(Math.random() * maxTop);
+      codeElement.style.left = `${randomLeft}px`;
+      codeElement.style.top = `${randomTop}px`;
+    }
+
+    window.addEventListener('load', () => {
+      moveCode();
+      setTimeout(hideVolumeControl, 1000);
+    });
+    setInterval(moveCode, 4000);
+
+    const goFullscreen = () => {
+      if (playerElement.requestFullscreen) {
+        playerElement.requestFullscreen();
+      } else if (playerElement.webkitRequestFullscreen) {
+        playerElement.webkitRequestFullscreen();
+      } else if (playerElement.mozRequestFullScreen) {
+        playerElement.mozRequestFullScreen();
+      } else if (playerElement.msRequestFullscreen) {
+        playerElement.msRequestFullscreen();
+      }
+    };
+
+    const start = () => {
+      goFullscreen();
+      document.removeEventListener('click', start);
+    };
+    document.addEventListener('click', start);
+
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('keydown', function(e) {
+      if (
+        e.key === 'F12' ||
+        (e.ctrlKey && e.shiftKey && ['i', 'j'].includes(e.key.toLowerCase())) ||
+        (e.ctrlKey && e.key.toLowerCase() === 'u')
+      ) {
+        e.preventDefault();
+      }
+    });
+
+    // مراقبة التشغيل وإعادة التحميل إذا توقف فجأة
+    let lastPlayTime = Date.now();
+    setInterval(() => {
+      const now = Date.now();
+      if (now - lastPlayTime > 15000) {
+        const iframeSrc = iframe.getAttribute('src');
+        iframe.setAttribute('src', iframeSrc);
+        lastPlayTime = now;
+      }
+    }, 10000);
+  </script>
+</body>
+</html>
