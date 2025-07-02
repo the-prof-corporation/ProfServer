@@ -1,0 +1,111 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.plyr.io/3.6.3/demo.css" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: black;
+      overflow: hidden;
+    }
+
+    #player {
+      width: 100%;
+      height: 100vh;
+      position: relative;
+    }
+
+    .floating-code {
+      position: absolute;
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 5px 15px;
+      border-radius: 8px;
+      z-index: 9999;
+      transition: top 3s ease, left 3s ease;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="plyr__video-embed" id="player">
+    <!-- iframe بيتحط بالـ JS -->
+
+    <!-- الكود المتحرك فوق الفيديو -->
+    <div class="floating-code" id="floatingCode">جارٍ التحميل...</div>
+  </div>
+
+  <script src="https://cdn.plyr.io/3.7.8/demo.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code') || 'بدون كود';
+    const videoId = params.get('video') || 'lh7n0Bn6eEw'; // fallback
+
+    const codeElement = document.getElementById('floatingCode');
+    const playerElement = document.getElementById('player');
+
+    // إنشاء iframe للفيديو تلقائيًا
+    const iframe = document.createElement('iframe');
+    iframe.setAttribute('src', `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1`);
+    iframe.setAttribute('allowfullscreen', '');
+    iframe.setAttribute('allow', 'autoplay');
+    playerElement.insertBefore(iframe, codeElement); // نضيفه قبل الكود المتحرك
+
+    // كتابة الكود
+    codeElement.innerText = `${code}`;
+
+    // حركة الكود
+    function moveCodeSmoothly() {
+      const playerRect = playerElement.getBoundingClientRect();
+      const codeRect = codeElement.getBoundingClientRect();
+
+      const maxLeft = playerRect.width - codeRect.width;
+      const maxTop = playerRect.height - codeRect.height;
+
+      const randomLeft = Math.floor(Math.random() * maxLeft);
+      const randomTop = Math.floor(Math.random() * maxTop);
+
+      codeElement.style.left = `${randomLeft}px`;
+      codeElement.style.top = `${randomTop}px`;
+    }
+
+    window.addEventListener('load', () => {
+      moveCodeSmoothly();
+    });
+
+    setInterval(moveCodeSmoothly, 4000);
+
+    // تفعيل fullscreen بعد أول كليك
+    const goFullscreen = () => {
+      if (playerElement.requestFullscreen) {
+        playerElement.requestFullscreen();
+      } else if (playerElement.webkitRequestFullscreen) {
+        playerElement.webkitRequestFullscreen();
+      } else if (playerElement.mozRequestFullScreen) {
+        playerElement.mozRequestFullScreen();
+      } else if (playerElement.msRequestFullscreen) {
+        playerElement.msRequestFullscreen();
+      }
+    };
+
+    const start = () => {
+      goFullscreen();
+      document.removeEventListener('click', start);
+    };
+
+    document.addEventListener('click', start);
+  </script>
+
+</body>
+</html>
