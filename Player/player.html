@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>فيديو محمي</title>
+  <title>The Prof</title> 
   <link href="https://cdn.plyr.io/3.6.3/demo.css" rel="stylesheet" />
   <style>
     :root {
@@ -55,6 +55,12 @@
       top: 0;
       left: 0;
       pointer-events: none;
+    }
+
+    /* إخفاء التحكم في الصوت */
+    .plyr__volume,
+    .plyr__controls button[data-plyr="mute"] {
+      display: none !important;
     }
   </style>
 </head>
