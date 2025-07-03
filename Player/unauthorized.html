@@ -4,12 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>غير مصرح</title>
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1828/1828843.png" type="image/png" />
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
       padding: 0;
-      background: linear-gradient(135deg, #1f1c2c, #928dab);
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
       height: 100vh;
       display: flex;
       align-items: center;
@@ -17,6 +18,12 @@
       font-family: 'Cairo', sans-serif;
       color: white;
       text-align: center;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
     }
 
     .container {
@@ -27,14 +34,31 @@
       box-shadow: 0 0 30px rgba(0,0,0,0.3);
     }
 
+    .logo {
+      width: 70px;
+      margin-bottom: 20px;
+    }
+
     h1 {
-      font-size: 3em;
+      font-size: 2.8em;
       margin-bottom: 10px;
     }
 
     p {
       font-size: 1.2em;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
+    }
+
+    .countdown {
+      font-size: 1.4em;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    .note {
+      font-size: 0.95em;
+      margin-top: 10px;
+      color: #dcdcdc;
     }
 
     a {
@@ -53,9 +77,25 @@
 </head>
 <body>
   <div class="container">
+    <img class="logo" src="https://cdn-icons-png.flaticon.com/512/1828/1828843.png" alt="Unauthorized Icon">
     <h1>🚫 وصول غير مصرح</h1>
     <p>عذرًا، لا يمكنك الوصول إلى هذه الصفحة بدون صلاحية مناسبة.</p>
-    <a href="/">العودة إلى الصفحة الرئيسية</a>
+    <div class="countdown">سيتم تحويلك خلال <span id="timer">10</span> ثوانٍ...</div>
+    <a href="/">العودة إلى الصفحة الرئيسية الآن</a>
+    <p class="note">إذا كنت تعتقد أن هذا خطأ، يرجى التواصل مع الدعم الفني.</p>
   </div>
+
+  <script>
+    let countdown = 10;
+    const timerEl = document.getElementById('timer');
+    const interval = setInterval(() => {
+      countdown--;
+      if (countdown <= 0) {
+        clearInterval(interval);
+        window.location.href = "/";
+      }
+      timerEl.textContent = countdown;
+    }, 1000);
+  </script>
 </body>
 </html>
