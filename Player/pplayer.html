@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>The Prof</title>
+  <link href="https://cdn.plyr.io/3.6.3/demo.css" rel="stylesheet" />
+  <style>
+    :root {
+      --plyr-color-main: #ff0000;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    #player {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+      touch-action: none;
+      cursor: auto;
+    }
+    .floating-code {
+      position: absolute;
+      font-size: 16px;
+      font-weight: bold;
+      padding: 4px 10px;
+      background: rgba(255, 0, 0, 0.25);
+      color: white;
+      border-radius: 8px;
+      pointer-events: none;
+      white-space: nowrap;
+      z-index: 9999;
+      opacity: 0.6;
+      transition: top 2s ease, left 2s ease;
+      animation: blink 4s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 0.1; }
+      50% { opacity: 0.6; }
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    }
+    .plyr__volume,
+    .plyr__controls button[data-plyr="mute"] {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="plyr__video-embed" id="player">
+    <div class="floating-code" id="floatingCode"></div>
+  </div>
+
+  <script src="https://cdn.plyr.io/3.7.8/demo.js"></script>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const code = params.get('code') || "NO CODE";
+    const videoId = params.get('video') || "kYSXfucLLyk"; // فيديو افتراضي
+
+    const codeEl = document.getElementById('floatingCode');
+    const player = document.getElementById('player');
+
+    codeEl.innerText = code;
+
+    const ifr = document.createElement('iframe');
+    ifr.id = 'ytplayer';
+    ifr.allow = 'autoplay';
+    ifr.allowFullscreen = true;
+    ifr.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1&rel=0&modestbranding=1&iv_load_policy=3&controls=0&fs=0&disablekb=1&showinfo=0&enablejsapi=1`;
+    player.insertBefore(ifr, codeEl);
+
+    function moveCode() {
+      const pr = player.getBoundingClientRect();
+      const cr = codeEl.getBoundingClientRect();
+      const maxLeft = pr.width - cr.width;
+      const maxTop = pr.height - cr.height;
+      codeEl.style.left = `${Math.random() * maxLeft}px`;
+      codeEl.style.top = `${Math.random() * maxTop}px`;
+    }
+    window.addEventListener('load', () => {
+      moveCode();
+      setInterval(moveCode, 5000);
+    });
+
+    setInterval(() => {
+      try {
+        ifr.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'skipAd', args: [] }), '*');
+      } catch {}
+    }, 2000);
+
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const req = player.requestFullscreen || player.webkitRequestFullscreen || player.mozRequestFullScreen || player.msRequestFullscreen;
+        req && req.call(player);
+      }, 500);
+    });
+
+    // حظر بعض المفاتيح وأوامر الفحص
+    const blockedKeys = ['F12', 'Tab', ' ', 'ArrowLeft', 'ArrowRight'];
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('keydown', e => {
+      const key = e.key.toLowerCase();
+      if (blockedKeys.includes(e.key) || ((e.ctrlKey || e.metaKey) && ['u','i','j','c','s','p'].includes(key))) e.preventDefault();
+    });
+    ['selectstart','dragstart','copy','cut','paste'].forEach(evt => document.addEventListener(evt, e => e.preventDefault()));
+  </script>
+</body>
+</html>
