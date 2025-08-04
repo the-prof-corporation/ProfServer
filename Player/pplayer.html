@@ -2,125 +2,53 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Prof</title>
-  <link href="https://cdn.plyr.io/3.6.3/demo.css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Plyr Fullscreen YouTube</title>
+
+  <!-- Plyr CSS -->
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
   <style>
-    :root {
-      --plyr-color-main: #ff0000;
-    }
     html, body {
       margin: 0;
       padding: 0;
-      background: #000;
+      background: black;
       height: 100%;
-      width: 100%;
       overflow: hidden;
-      font-family: sans-serif;
     }
+
     #player {
-      position: relative;
       width: 100vw;
       height: 100vh;
-      max-height: 100dvh;
-      overflow: hidden;
-      touch-action: none;
     }
 
-    .plyr__video-embed iframe {
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      inset: 0;
-      border: none;
-      pointer-events: none;
-    }
-
-    .floating-code {
-      position: absolute;
-      font-size: 14px;
-      font-weight: bold;
-      padding: 6px 10px;
-      background: rgba(255, 0, 0, 0.25);
-      color: white;
-      border-radius: 6px;
-      z-index: 9999;
-      opacity: 0.6;
-      white-space: nowrap;
-      transition: top 2s ease, left 2s ease;
-      animation: blink 4s ease-in-out infinite;
-      pointer-events: none;
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 0.1; }
-      50% { opacity: 0.6; }
-    }
-
-    /* إخفاء التحكم في الصوت */
-    .plyr__volume,
-    .plyr__controls button[data-plyr="mute"] {
-      display: none !important;
+    iframe {
+      width: 100% !important;
+      height: 100% !important;
     }
   </style>
 </head>
 <body>
-  <div class="plyr__video-embed" id="player">
-    <div class="floating-code" id="floatingCode"></div>
-  </div>
 
-  <script src="https://cdn.plyr.io/3.7.8/demo.js"></script>
+  <!-- Plyr container for YouTube video -->
+  <div id="player" data-plyr-provider="youtube" data-plyr-embed-id="kYSXfucLLyk"></div>
+
+  <!-- Plyr JS -->
+  <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
   <script>
-    const params = new URLSearchParams(location.search);
-    const code = params.get('code') || "NO CODE";
-    const videoId = params.get('video') || "kYSXfucLLyk";
-
-    const codeEl = document.getElementById('floatingCode');
-    const player = document.getElementById('player');
-    codeEl.innerText = code;
-
-    const ifr = document.createElement('iframe');
-    ifr.allow = 'autoplay; fullscreen; encrypted-media';
-    ifr.setAttribute('playsinline', '');
-    ifr.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1&rel=0&modestbranding=1&iv_load_policy=3&controls=0&fs=0&disablekb=1&showinfo=0&enablejsapi=1`;
-    player.insertBefore(ifr, codeEl);
-
-    function moveCode() {
-      const pr = player.getBoundingClientRect();
-      const cr = codeEl.getBoundingClientRect();
-      const maxLeft = pr.width - cr.width;
-      const maxTop = pr.height - cr.height;
-      codeEl.style.left = `${Math.random() * maxLeft}px`;
-      codeEl.style.top = `${Math.random() * maxTop}px`;
-    }
-
-    window.addEventListener('load', () => {
-      moveCode();
-      setInterval(moveCode, 5000);
+    const player = new Plyr('#player', {
+      fullscreen: {
+        enabled: true,
+        fallback: true,
+        iosNative: true
+      }
     });
 
-    setInterval(() => {
-      try {
-        ifr.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'skipAd', args: [] }), '*');
-      } catch {}
-    }, 2000);
-
-    // الطلب للدخول في وضع ملء الشاشة عند أول تحميل (بموافقة المستخدم فقط)
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        const req = player.requestFullscreen || player.webkitRequestFullscreen || player.mozRequestFullScreen || player.msRequestFullscreen;
-        if (req && window.innerWidth < 768) req.call(player); // فقط على الموبايل
-      }, 800);
+    // دخول fullscreen تلقائيًا بعد التشغيل
+    player.on('ready', () => {
+      player.fullscreen.enter();
+      player.play();
     });
-
-    // حظر الاختصارات
-    const blockedKeys = ['F12', 'Tab', ' ', 'ArrowLeft', 'ArrowRight'];
-    document.addEventListener('contextmenu', e => e.preventDefault());
-    document.addEventListener('keydown', e => {
-      const key = e.key.toLowerCase();
-      if (blockedKeys.includes(e.key) || ((e.ctrlKey || e.metaKey) && ['u','i','j','c','s','p'].includes(key))) e.preventDefault();
-    });
-    ['selectstart','dragstart','copy','cut','paste'].forEach(evt => document.addEventListener(evt, e => e.preventDefault()));
   </script>
+
 </body>
 </html>
