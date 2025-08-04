@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>الدرس 3: المتغيرات في بايثون - Prof Academy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: "Cairo", sans-serif;
+      }
+    </style>
+    <script>
+      function nextLesson() {
+        alert("الانتقال إلى الدرس التالي...");
+      }
+
+      function toggleChapter(button) {
+        const content = button.nextElementSibling;
+        content.classList.toggle("hidden");
+      }
+    </script>
+  </head>
+  <body class="bg-gray-900 text-gray-100">
+    <!-- Header -->
+    <header
+      class="fixed top-0 w-full bg-gray-800 shadow z-50 border-b border-gray-700"
+    >
+      <div
+        class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between"
+      >
+        <div class="flex items-center gap-2 text-xl font-bold text-blue-300">
+          <i class="fas fa-graduation-cap text-2xl"></i>
+          Prof Academy
+        </div>
+        <div class="text-lg font-semibold text-white">كورس أساسيات البرمجة</div>
+        <div class="relative group">
+          <div
+            class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-400 to-blue-700 flex items-center justify-center text-white cursor-pointer"
+          >
+            <i class="fas fa-user"></i>
+          </div>
+          <div
+            class="absolute hidden group-hover:block right-0 mt-2 w-48 bg-gray-800 shadow-lg border border-gray-600 rounded-md z-50"
+          >
+            <a href="#" class="block px-4 py-2 hover:bg-blue-600 text-white">
+              <i class="fas fa-tachometer-alt mr-2"></i> لوحة التحكم
+            </a>
+            <a href="#" class="block px-4 py-2 hover:bg-blue-600 text-white">
+              <i class="fas fa-book mr-2"></i> كورساتي
+            </a>
+            <a href="#" class="block px-4 py-2 hover:bg-blue-600 text-white">
+              <i class="fas fa-cog mr-2"></i> الإعدادات
+            </a>
+            <a href="#" class="block px-4 py-2 hover:bg-blue-600 text-white">
+              <i class="fas fa-sign-out-alt mr-2"></i> تسجيل الخروج
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Layout -->
+    <div class="pt-20 grid grid-cols-1 lg:grid-cols-[1fr_350px] min-h-screen">
+      <!-- Video Section -->
+      <div class="bg-gray-900">
+       
+            <div class="aspect-video w-full bg-black">
+                <iframe
+                  src="pplayer.html"
+                  frameborder="0"
+                  allowfullscreen
+                  class="w-full h-full"
+                ></iframe>
+              
+              
+        </div>
+        <div class="p-6 bg-gray-800">
+          <h1 class="text-2xl font-bold mb-4 text-white">
+            الدرس 3: المتغيرات في بايثون
+          </h1>
+          <p class="text-gray-300 leading-relaxed mb-6">
+            في هذا الدرس سنتعلم كيفية إنشاء واستخدام المتغيرات في لغة البرمجة
+            بايثون. سنغطي أنواع البيانات المختلفة وكيفية التعامل معها بطريقة
+            صحيحة وفعالة.
+          </p>
+          <div class="flex flex-wrap gap-4">
+            <button
+              class="bg-green-600 text-white px-4 py-2 rounded-full flex items-center gap-2 hover:shadow"
+            >
+              <i class="fas fa-check"></i>
+              تمت المشاهدة
+            </button>
+            <button
+              onclick="nextLesson()"
+              class="bg-gradient-to-r from-blue-400 to-blue-600 text-white px-4 py-2 rounded-full flex items-center gap-2 hover:shadow"
+            >
+              <i class="fas fa-forward"></i>
+              الدرس التالي
+            </button>
+            <button
+              class="border-2 border-blue-400 text-blue-400 px-4 py-2 rounded-full flex items-center gap-2 hover:bg-blue-600 hover:text-white"
+            >
+              <i class="fas fa-bookmark"></i>
+              إضافة للمفضلة
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="bg-gray-800 border-r border-gray-700 overflow-y-auto">
+        <div class="p-6 border-b border-gray-600">
+          <h2 class="text-lg font-bold flex items-center gap-2 text-white">
+            <i class="fas fa-list"></i>
+            محتوى الكورس
+          </h2>
+          <div class="mt-4">
+            <div
+              class="flex justify-between text-sm font-semibold mb-1 text-gray-300"
+            >
+              <span>التقدم الإجمالي</span>
+              <span>65%</span>
+            </div>
+            <div class="w-full bg-gray-700 h-2 rounded-full overflow-hidden">
+              <div
+                class="bg-gradient-to-r from-blue-400 to-blue-600 h-full w-[65%] transition-all"
+              ></div>
+            </div>
+          </div>
+        </div>
+        <!-- Chapters -->
+        <div class="divide-y divide-gray-700">
+          <div>
+            <button
+              class="w-full text-right px-6 py-4 hover:bg-blue-900 flex items-center justify-between text-white"
+              onclick="toggleChapter(this)"
+            >
+              <span class="flex items-center gap-2 font-semibold">
+                <i class="fas fa-puzzle-piece"></i>
+                الفصل 1: المقدمة
+              </span>
+              <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="bg-gray-700">
+              <div
+                class="px-6 py-3 cursor-pointer hover:bg-blue-800 flex justify-between items-center text-sm text-white border-b border-gray-600"
+              >
+                <div>
+                  <div class="font-semibold">الدرس 1: ما هي البرمجة؟</div>
+                  <div class="text-xs text-gray-300">15 دقيقة</div>
+                </div>
+                <div class="text-green-400 font-bold">
+                  <i class="fas fa-check-circle"></i> مكتمل
+                </div>
+              </div>
+              <div
+                class="px-6 py-3 cursor-pointer hover:bg-blue-800 flex justify-between items-center text-sm text-white"
+              >
+                <div>
+                  <div class="font-semibold">الدرس 2: الأدوات المطلوبة</div>
+                  <div class="text-xs text-gray-300">20 دقيقة</div>
+                </div>
+                <div class="text-green-400 font-bold">
+                  <i class="fas fa-check-circle"></i> مكتمل
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="p-6 border-t border-gray-600">
+          <h3 class="font-semibold mb-2 flex items-center gap-2 text-white">
+            <i class="fas fa-sticky-note"></i>
+            ملاحظاتي
+          </h3>
+          <div
+            class="bg-gray-700 p-4 rounded-md border border-gray-600 text-sm text-gray-300 min-h-[100px]"
+          >
+            اكتب ملاحظاتك هنا حول هذا الدرس...
+          </div>
+        </div> -->
+      </aside>
+    </div>
+  </body>
+</html>
